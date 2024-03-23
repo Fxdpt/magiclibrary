@@ -13,6 +13,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class AddUser
 {
+    /**
+     * @param ReadUserRepositoryInterface $readUserRepository
+     * @param WriteUserRepositoryInterface $writeUserRepository
+     * @param UserPasswordHasherInterface $passwordHasher
+     */
     public function __construct(
         private readonly ReadUserRepositoryInterface $readUserRepository,
         private readonly WriteUserRepositoryInterface $writeUserRepository,
@@ -20,6 +25,11 @@ final class AddUser
     ) {
     }
 
+    /**
+     * @param AddUserRequest $request
+     *
+     * @return JsonResponse
+     */
     public function __invoke(AddUserRequest $request): JsonResponse
     {
         try {
@@ -41,6 +51,9 @@ final class AddUser
         }
     }
 
+    /**
+     * @param string $email
+     */
     private function validateUniqueUser(string $email): void
     {
         if ($this->readUserRepository->findByEmail($email) !== null) {

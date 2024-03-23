@@ -13,8 +13,6 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     /**
-     * Undocumented function
-     *
      * @param string $email
      * @param string $username
      * @param string[] $roles
@@ -36,7 +34,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
- /**
+    /**
      * @see UserInterface
      */
     public function getRoles(): array

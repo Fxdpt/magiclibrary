@@ -13,12 +13,22 @@ use MagicLibrary\Security\Authentication\Application\UseCase\AddUser\AddUser;
 
 final class AddUserController extends AbstractController
 {
+    /**
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     */
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator
     ) {
     }
 
+    /**
+     * @param AddUser $useCase
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function __invoke(AddUser $useCase, Request $request): Response
     {
         try {
@@ -32,6 +42,13 @@ final class AddUserController extends AbstractController
         }
     }
 
+    /**
+     * @param Request $request
+     *
+     * @throws \Throwable
+     *
+     * @return AddUserRequest
+     */
     private function createAddUserRequest(Request $request): AddUserRequest
     {
         $addUserRequest = $this->serializer->deserialize($request->getContent(), AddUserRequest::class, 'json');
