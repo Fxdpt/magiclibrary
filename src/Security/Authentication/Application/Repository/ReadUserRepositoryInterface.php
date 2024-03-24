@@ -16,4 +16,15 @@ interface ReadUserRepositoryInterface
      * @return User|null
      */
     public function findByEmail(string $email): ?User;
+
+    /**
+     * Find a user by his authentication token.
+     *
+     * @param string $token
+     *
+     * @throws \Throwable
+     *
+     * @return User|null
+     */
+    public function findByToken(string $token): ?User;
 }

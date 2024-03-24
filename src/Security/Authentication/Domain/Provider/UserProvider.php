@@ -2,6 +2,7 @@
 
 namespace MagicLibrary\Security\Authentication\Domain\Provider;
 
+use MagicLibrary\Security\Authentication\Application\Repository\ReadUserRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use MagicLibrary\Security\Authentication\Domain\Model\User;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -10,6 +11,10 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 final class UserProvider implements UserProviderInterface
 {
+    public function __construct(private readonly ReadUserRepositoryInterface $readUserRepository)
+    {
+    }
+
     /**
      * Symfony calls this method if you use features like switch_user
      * or remember_me. If you're not using these features, you do not
@@ -19,10 +24,12 @@ final class UserProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        // Load a User object from your data source or throw UserNotFoundException.
-        // The $identifier argument is whatever value is being returned by the
-        // getUserIdentifier() method in your User class.
-        throw new \Exception('TODO: fill in loadUserByIdentifier() inside ' . __FILE__);
+        $user = $this->readUserRepository->findByEmail($identifier);
+        if ($user === null) {
+            throw new UserNotFoundException('User not found');
+        }
+
+        return $user;
     }
 
     /**
