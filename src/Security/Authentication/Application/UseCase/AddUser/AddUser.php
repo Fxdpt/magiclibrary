@@ -44,7 +44,7 @@ final class AddUser
             $this->writeUserRepository->add($user);
 
             return new JsonResponse(null, Response::HTTP_CREATED);
-        } catch (\Throwable $ex) {
+        }catch (\Throwable $ex) {
             return $ex instanceof UserException
                 ? new JsonResponse($ex->getMessage(), Response::HTTP_BAD_REQUEST)
                 : new JsonResponse('An  error occurred while creating user', Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -56,7 +56,7 @@ final class AddUser
      */
     private function validateUniqueUser(string $email): void
     {
-        if ($this->readUserRepository->findByEmail($email) !== null) {
+        if($this->readUserRepository->findByEmail($email) !== null) {
             throw UserException::emailAlreadyUsed($email);
         }
     }
