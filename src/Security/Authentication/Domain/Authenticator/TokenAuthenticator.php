@@ -4,6 +4,7 @@ namespace MagicLibrary\Security\Authentication\Domain\Authenticator;
 
 use MagicLibrary\Security\Authentication\Application\Repository\ReadUserRepositoryInterface;
 use MagicLibrary\Security\Authentication\Application\Repository\WriteSessionRepositoryInterface;
+use MagicLibrary\Security\Authentication\Domain\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ final class TokenAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($token->getUser() === null) {
+        if ($token->getUser() === null || ! $token->getUser() instanceof User) {
             throw new CustomUserMessageAuthenticationException('invalid user');
         }
         $this->writeSessionRepository->refresh($token->getUser());
