@@ -27,6 +27,7 @@ final class DbReadUserRepository implements ReadUserRepositoryInterface
         if (($result = $statement->fetch(\PDO::FETCH_ASSOC)) !== false) {
             /**
              * @var array{
+             *  id: int,
              *  email: string,
              *  username: string,
              *  password: string,
@@ -37,9 +38,46 @@ final class DbReadUserRepository implements ReadUserRepositoryInterface
                 $result['email'],
                 $result['username'],
                 explode(',', $result['roles'])
-            ))->setPassword($result['password']);
+            ))->setPassword($result['password'])->setId($result['id']);
         }
 
         return $user;
+    }
+
+    public function findByToken(string $token): ?User
+    {
+        $statement = $this->db->prepare(
+            <<<'SQL'
+            SELECT * from user
+                INNER JOIN session ON session.user_id = user.id
+                WHERE token = :token
+            SQL
+        );
+
+        $statement->bindValue(':token', $token, \PDO::PARAM_STR);
+
+        $statement->execute();
+
+        $user = null;
+
+        if (($result = $statement->fetch(\PDO::FETCH_ASSOC)) !== false) {
+            /**
+             * @var array{
+             *  id: int,
+             *  email: string,
+             *  username: string,
+             *  password: string,
+             *  roles: string
+             * } $result
+             */
+            $user = (new User(
+                $result['email'],
+                $result['username'],
+                explode(',', $result['roles'])
+            ))->setPassword($result['password'])->setId($result['id']);
+        }
+
+        return $user;
+
     }
 }

@@ -2,3 +2,8 @@ add_user:
   path: /user
   controller: MagicLibrary\Security\Authentication\Infrastructure\API\AddUser\AddUserController
   methods: POST
+
+api_login:
+  path: /login
+  controller: MagicLibrary\Security\Authentication\Infrastructure\API\Login\LoginController
+  methods: POST

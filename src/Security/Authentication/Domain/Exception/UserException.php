@@ -13,4 +13,9 @@ final class UserException extends \Exception
     {
         return new self(sprintf('email : [%s] is already used by another account', $email));
     }
+
+    public static function authenticationFailed(): self
+    {
+        return new self('Unable to authenticate');
+    }
 }

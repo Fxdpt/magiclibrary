@@ -12,6 +12,8 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private string $password;
 
+    private ?int $id = null;
+
     /**
      * @param string $email
      * @param string $username
@@ -77,5 +79,17 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 }

@@ -13,9 +13,9 @@ security:
             security: false
         main:
             stateless: true
-            lazy: true
             provider: custom_user_provider
-
+            custom_authenticators:
+                - MagicLibrary\Security\Authentication\Domain\Authenticator\TokenAuthenticator
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
