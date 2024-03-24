@@ -24,6 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: php-actions/composer@v6
-      - uses: thenabeel/action-phpcs@v8
-        with:
-          standard: PSR12
+      - name: phpcs
+        run: vendor/bin/phpcs --standard=PSR12
+        working-directory: src
