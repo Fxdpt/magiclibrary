@@ -8,8 +8,8 @@ on:
       - master
 
 jobs:
-  lint:
-    name: lint
+  phpstan:
+    name: phpstan
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -18,3 +18,12 @@ jobs:
       with:
         path: src/
         level: 9
+  phpcs:
+    name: phpcs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - uses: thenabeel/action-phpcs@v8
+        with:
+          standard: PSR12
