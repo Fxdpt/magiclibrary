@@ -48,7 +48,22 @@ final class DbWriteSessionRepository implements WriteSessionRepositoryInterface
             (new \DateTimeImmutable())->add(new \DateInterval('PT2H'))->getTimestamp(),
             \PDO::PARAM_INT
         );
-        $statement->bindValue(':userId', $user->getId(), \PDO::PARAM_STR);
+        $statement->bindValue(':userId', $user->getId(), \PDO::PARAM_INT);
+
+        $statement->execute();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(User $user): void
+    {
+        $statement = $this->db->prepare(
+            <<<SQL
+                DELETE FROM `session` WHERE user_id = :userId
+                SQL
+        );
+        $statement->bindValue(':userId', $user->getId(), \PDO::PARAM_INT);
 
         $statement->execute();
     }

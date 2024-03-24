@@ -24,4 +24,13 @@ interface WriteSessionRepositoryInterface
      * @throws \Throwable
      */
     public function refresh(User $user): void;
+
+    /**
+     * Delete existing token of given user
+     *
+     * @param User $user
+     *
+     * @throws \Throwable
+     */
+    public function delete(User $user): void;
 }

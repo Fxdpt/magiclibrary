@@ -2,8 +2,6 @@
 
 namespace MagicLibrary\Security\Authentication\Application\UseCase\Login;
 
-use DateInterval;
-use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use MagicLibrary\Security\Authentication\Domain\Exception\UserException;
@@ -43,7 +41,7 @@ final class Login
             }
 
             $token = substr(md5((string) rand()), 0, rand(10, 20));
-            $expireAt = (new \DateTimeImmutable())->add(new DateInterval('PT2H'));
+            $expireAt = (new \DateTimeImmutable())->add(new \DateInterval('PT2H'));
 
             if ($user->getId() === null) {
                 throw UserException::invalidId();
@@ -55,6 +53,7 @@ final class Login
                 $expireAt
             );
 
+            $this->writeSessionRepository->delete($user);
             $this->writeSessionRepository->add($session);
 
             return new JsonResponse([

@@ -8,10 +8,16 @@ use MagicLibrary\Security\Authentication\Domain\Model\User;
 
 final class DbReadUserRepository implements ReadUserRepositoryInterface
 {
+    /**
+     * @param DatabaseConnection $db
+     */
     public function __construct(private readonly DatabaseConnection $db)
     {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function findByEmail(string $email): ?User
     {
         $statement = $this->db->prepare(
@@ -44,6 +50,9 @@ final class DbReadUserRepository implements ReadUserRepositoryInterface
         return $user;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function findByToken(string $token): ?User
     {
         $statement = $this->db->prepare(
