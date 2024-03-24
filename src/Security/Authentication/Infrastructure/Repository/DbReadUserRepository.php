@@ -78,6 +78,5 @@ final class DbReadUserRepository implements ReadUserRepositoryInterface
         }
 
         return $user;
-
     }
 }

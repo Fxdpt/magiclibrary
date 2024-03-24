@@ -15,6 +15,11 @@ use MagicLibrary\Security\Authentication\Domain\Model\Session;
 
 final class Login
 {
+    /**
+     * @param ReadUserRepositoryInterface $readUserRepository
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param WriteSessionRepositoryInterface $writeSessionRepository
+     */
     public function __construct(
         private readonly ReadUserRepositoryInterface $readUserRepository,
         private readonly UserPasswordHasherInterface $passwordHasher,
@@ -22,6 +27,10 @@ final class Login
     ) {
     }
 
+    /**
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
     public function __invoke(LoginRequest $request): JsonResponse
     {
         try {
@@ -33,8 +42,12 @@ final class Login
                 throw UserException::authenticationFailed();
             }
 
-            $token = substr(md5(rand()), 0, rand(10,20));
+            $token = substr(md5((string) rand()), 0, rand(10, 20));
             $expireAt = (new \DateTimeImmutable())->add(new DateInterval('PT2H'));
+
+            if ($user->getId() === null) {
+                throw UserException::invalidId();
+            }
 
             $session = new Session(
                 $user->getId(),
@@ -48,8 +61,10 @@ final class Login
                 'token' => $token,
                 'expire_at' => $expireAt
             ]);
-        } catch (UserException $ex) {
-            return new JsonResponse($ex->getMessage(), Response::HTTP_UNAUTHORIZED);
+        } catch (\Throwable $ex) {
+            return $ex instanceof UserException
+                ? new JsonResponse($ex->getMessage(), Response::HTTP_BAD_REQUEST)
+                : new JsonResponse('An error occurred while authenticating', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

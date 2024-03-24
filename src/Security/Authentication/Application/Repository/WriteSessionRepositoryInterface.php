@@ -19,8 +19,9 @@ interface WriteSessionRepositoryInterface
     /**
      * Refresh expiration of token
      *
-     * @param User $token
-     * @return void
+     * @param User $user
+     *
+     * @throws \Throwable
      */
     public function refresh(User $user): void;
 }

@@ -47,6 +47,9 @@ final class TokenAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        if ($token->getUser() === null) {
+            throw new CustomUserMessageAuthenticationException('invalid user');
+        }
         $this->writeSessionRepository->refresh($token->getUser());
 
         return null;

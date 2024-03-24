@@ -52,6 +52,4 @@ final class DbWriteSessionRepository implements WriteSessionRepositoryInterface
 
         $statement->execute();
     }
-
-    
 }

@@ -16,8 +16,7 @@ final class LoginController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator
-    )
-    {
+    ) {
     }
 
     public function __invoke(Login $useCase, Request $request): Response
@@ -45,5 +44,4 @@ final class LoginController extends AbstractController
 
         return $loginRequest;
     }
-
 }
