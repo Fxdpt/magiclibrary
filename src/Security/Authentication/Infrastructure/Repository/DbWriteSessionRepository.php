@@ -67,4 +67,20 @@ final class DbWriteSessionRepository implements WriteSessionRepositoryInterface
 
         $statement->execute();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteExpiredTokens(): void
+    {
+        $statement = $this->db->prepare(
+            <<<SQL
+                DELETE FROM `session` WHERE expiration_date < :now
+                SQL
+        );
+
+        $statement->bindValue(':now', (new \DateTimeImmutable())->getTimestamp(), \PDO::PARAM_INT);
+
+        $statement->execute();
+    }
 }

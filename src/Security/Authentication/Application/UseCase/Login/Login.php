@@ -53,6 +53,7 @@ final class Login
                 $expireAt
             );
 
+            $this->writeSessionRepository->deleteExpiredTokens();
             $this->writeSessionRepository->delete($user);
             $this->writeSessionRepository->add($session);
 

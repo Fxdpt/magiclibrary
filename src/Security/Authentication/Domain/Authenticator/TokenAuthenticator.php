@@ -32,6 +32,7 @@ final class TokenAuthenticator extends AbstractAuthenticator
     public function authenticate(Request $request): Passport
     {
         $token = $request->headers->get('X-AUTH-TOKEN');
+        $this->writeSessionRepository->deleteExpiredTokens();
         if (null === $token) {
             // The token header was empty, authentication fails with HTTP Status
             // Code 401 "Unauthorized"

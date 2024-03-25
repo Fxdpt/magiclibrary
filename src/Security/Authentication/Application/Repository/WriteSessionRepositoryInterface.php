@@ -33,4 +33,11 @@ interface WriteSessionRepositoryInterface
      * @throws \Throwable
      */
     public function delete(User $user): void;
+
+    /**
+     * Delete all expired tokens.
+     *
+     * @return void
+     */
+    public function deleteExpiredTokens(): void;
 }
