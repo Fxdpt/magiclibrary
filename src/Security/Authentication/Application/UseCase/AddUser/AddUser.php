@@ -47,7 +47,7 @@ final class AddUser
         } catch (\Throwable $ex) {
             return $ex instanceof UserException
                 ? new JsonResponse($ex->getMessage(), Response::HTTP_BAD_REQUEST)
-                : new JsonResponse('An  error occurred while creating user', Response::HTTP_INTERNAL_SERVER_ERROR);
+                : new JsonResponse('An error occurred while creating user', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

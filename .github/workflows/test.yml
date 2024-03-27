@@ -1,0 +1,14 @@
+name: Tests
+
+on: ['push', 'pull_request']
+
+jobs:
+  test:
+      name: pest
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+
+      - name: Tests
+        run: ./vendor/bin/pest tests
